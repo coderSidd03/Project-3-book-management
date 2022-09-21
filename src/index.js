@@ -6,8 +6,9 @@ const moment = require('moment');
 const { default: mongoose } = require('mongoose');
 const route = require('./routes/route.js');
 
-const PORT = process.env.PORT || 3000;
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,7 +21,7 @@ mongoose.connect("mongodb+srv://raj_3028:kWaM507ps0Icsdg0@cluster0.pw23ckf.mongo
     .catch(error => console.log(error));
 
 
-//===== Global Middleware for Console the Date, Time, IP Address and Print the perticular API Route Name when you will hit that API ========//
+//===== Global Middleware for Console the Date, Time, IP Address and Print the particular API Route Name when you will hit that API ========//
 app.use(
     function globalMiddleWare(req, res, next) {
         const dateTime = moment().format('YYYY-MM-DD hh:mm:ss');

@@ -39,7 +39,6 @@ const createUser = async (req, res) => {
 
         //<<<=====================Checking Address is Present or not.=====================>>>//
         if (address) {
-
             let { street, city, pincode } = address
             //=====================Validation of Street Address=====================//
             if (!checkString(street)) return res.status(400).send({ status: false, message: "Please Provide Valid Street Address  [ in string ]." });
