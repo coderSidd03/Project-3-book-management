@@ -32,7 +32,7 @@ const userModel = new mongoose.Schema({
         city: String,
         pincode: String
     }
-    
+
 }, { timestamps: true })
 
 

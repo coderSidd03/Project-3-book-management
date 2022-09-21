@@ -13,10 +13,9 @@ const reviewModel = new mongoose.Schema({
         type: String,
         require: true,
         default: 'Guest'
-        // value: reviewer's name
     },
     reviewedAt: {
-        type: date,
+        type: Date,
         require: true
     },
     rating: {
@@ -38,4 +37,4 @@ const reviewModel = new mongoose.Schema({
 }, { timestamps: true })
 
 
-module.exports = mongoose.Schema('Review', reviewModel)
+module.exports = mongoose.model('Review', reviewModel)

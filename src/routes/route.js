@@ -1,25 +1,31 @@
 //=====================Importing Module and Packages=====================//
 const express = require('express');
 const router = express.Router();
-const { createUser, loginUser } = require('../Controller/userController');
-const { createBook, getBook } = require('../controller/bookController') 
+const { Authentication, Authorisation } = require('../Middleware/auth')
+const { createUser, loginUser } = require('../Controller/userController')
+const { createBook, getAllBooks, getBookFromId } = require('../Controller/bookController')
+
+
 
 
 //===================== User Registration(Post API) =====================//
-router.post("/register", createUser);
+router.post("/register", createUser)
 
 //===================== User Login(Post API) =====================//
-router.post("/login", loginUser);
+router.post("/login", loginUser)
 
-router.post("/books", createBook)
-router.get("/books", getBook)
+//===================== Create Books(Post API) =====================//
+router.post("/books", Authentication, createBook)
+
+//===================== Get Books(Get API) =====================//
+router.get("/books", Authentication, getAllBooks)
+
+//===================== Get Books/:Bookid(Get API) =====================//
+router.get("/books/:bookId", Authentication, getBookFromId)
 
 
 
-//===================== It will Handle error When Wrong Route( not declared ) inputted =====================//
-router.all('/*', (req, res) => { return res.status(404).send({ status: 'ERROR', error: '/ invalid path params provided /' }) });
 
 
 //=====================Module Export=====================//
 module.exports = router;
-

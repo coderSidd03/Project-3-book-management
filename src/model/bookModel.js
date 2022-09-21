@@ -33,11 +33,11 @@ const bookModel = new mongoose.Schema({
     reviews: {
         type: Number,
         default: 0,
-        Comment: 'Holds number of reviews of this book'
+        // Comment: 'Holds number of reviews of this book'
     },
     deletedAt: {
         type: Date,
-        default: null
+        // default: null
     },
     isDeleted: {
         type: Boolean,
