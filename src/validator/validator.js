@@ -1,13 +1,18 @@
-const ObjectId = require('mongoose').Types.ObjectId
+const ObjectId = require('mongoose').Types.ObjectId;
 
-
-//<<<===================== Function for validation =====================>>>//
+//<<<==================================== Function for validation =======================================>>>//
 
 //===================== Checking that there is something as Input =====================//
 const checkInputsPresent = (value) => { return (Object.keys(value).length > 0); }
 
 //===================== Validating that the Input must be a non-empty String =====================//
-const checkString = (value) => { return ((typeof (value) === 'string' && value.trim().length > 0)); }
+// const checkString = (value) => { return ((typeof (value) === 'string' && value.trim().length > 0)); }
+
+const checkString = (value) => {
+    if (typeof value == "number" || typeof value == "undefined" || typeof value == null) return false;
+    if (typeof value == "string" && value.trim().length == 0) return false;
+    return true;
+}
 
 //===================== Function to validate the input value with Regex =====================//
 const validateId = (id) => { return ObjectId.isValid(id) }
@@ -23,4 +28,4 @@ const validateDate = (value) => { return (/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0
 
 
 //=====================Module Export=====================//
-module.exports = { checkInputsPresent, checkString, validatePincode, validateId, validateName, validateEmail, validatePassword, validateTitle, validateMobileNo, validateISBN, validateDate }
+module.exports = { checkInputsPresent, checkString, validatePincode, validateName, validateEmail, validatePassword, validateTitle, validateMobileNo, validateISBN, validateDate, validateId }

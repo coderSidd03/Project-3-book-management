@@ -1,4 +1,4 @@
-const userModel = require("../Model/userModel")
+const userModel = require("../model/userModel")
 const JWT = require('jsonwebtoken')
 const { checkInputsPresent, checkString, validateName, validateEmail, validatePassword, validateTitle, validateMobileNo } = require('../Validator/validator')
 

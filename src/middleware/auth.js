@@ -1,56 +1,60 @@
-const JWT = require('jsonwebtoken')
-const userModel = require("../model/userModel")
-const { checkString, validateId } = require('../Validator/validator')
-const ObjectId = require('mongoose').Types.ObjectId
+//=====================Importing Module and Packages=====================//
+const JWT = require('jsonwebtoken');
+const bookModel = require('../model/bookModel');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 
+//<<<=====================This function used for Authentication=====================>>>//
 const Authentication = async (req, res, next) => {
     try {
 
-        let token = req.headers['x-api-key']
-        if (!token) { return res.status(400).send({ status: false, message: "Token must be Present." }) }
+        //=====================Check Presence of Key with Value in Header=====================//
+        let token = req.headers['x-api-key'];
+        if (!token) return res.status(400).send({ status: false, message: "Token must be Present." });
 
+        //=====================Verify token & asigning it's value in request body =====================//
         JWT.verify(token, "We-are-from-Group-16", function (error, decodedToken) {
             if (error) {
-                return res.status(401).send({ status: false, message: "Invalid Token." })
+                return res.status(401).send({ status: false, message: "Invalid Token." });
             } else {
-                req.token = decodedToken
-                next()
+                req.token = decodedToken;
+                next();
             }
 
         })
 
     } catch (error) {
 
-        res.status(500).send({ status: 'error', error: error.message })
+        res.status(500).send({ status: 'error', error: error.message });
     }
-
 }
 
+
+
+//<<<=====================This function used for Authorisation(Phase II)=====================>>>//
 const Authorisation = async (req, res, next) => {
 
     try {
 
-        let userIdFromToken = req.token.payload.userId;
 
-        let bookId = req.params.bookId;
+        let bookIdFromParams = req.params.bookId;
 
-        if (!validateId(bookId)) return res.status(400).send({ status: false, message: "Book Id is invalid in url!!!!" })
+        if (!ObjectId.isValid(bookIdFromParams)) return res.status(400).send({ status: false, message: `This UserId: ${bookIdFromParams} is not Valid.` });
 
-        let findBook = await bookModel.findById(bookId)
-        if (!findBook) return res.status(400).send({ status: false, message: "book id is invalid in url!!!" })
+        const checkBookId = await bookModel.findOne({ _id: bookIdFromParams, isDeleted: false });
+        if (!checkBookId) return res.status(404).send({ status: false, message: ` BookId: ${bookIdFromParams}, is not exist or already been deleted.` });
 
-        let userIdFromBook = findBook.userId
-
-        if (userIdFromBook != userIdFromToken) {
-            return res.status(403).send({ status: false, message: "You are not authorized to Do this Task ..." })
+        if (checkBookId['userId'].toString() !== req.token.payload.userId) {
+            return res.status(403).send({ status: false, message: "Unauthorized User Access!" });
         }
+        next();
 
-        next()
-    } catch (err) {
-        return res.status(500).send({ status: false, Error: err.message })
+    } catch (error) {
+
+        res.status(500).send({ status: 'error', error: error.message });
     }
 
 }
 
+//=====================Module Export=====================//
 module.exports = { Authentication, Authorisation }

@@ -5,7 +5,7 @@
 ### Key points
 
 - Create a group database `groupXDatabase`. You can clean the db you previously used and resue that.
-- This time each group should have a *single git branch*. Coordinate amongst yourselves by ensuring every next person pulls the code last pushed by a team mate. You branch will be checked as part of the demo. Branch name should follow the naming convention `project/booksManagementGroupX`
+- This time each group should have a _single git branch_. Coordinate amongst yourselves by ensuring every next person pulls the code last pushed by a team mate. You branch will be checked as part of the demo. Branch name should follow the naming convention `project/booksManagementGroupX`
 - Follow the naming conventions exactly as instructed.
 
 ### Models
@@ -13,11 +13,11 @@
 - User Model
 
 ```yaml
-{ 
+{
   title: {string, mandatory, enum[Mr, Mrs, Miss]},
   name: {string, mandatory},
   phone: {string, mandatory, unique},
-  email: {string, mandatory, valid email, unique}, 
+  email: {string, mandatory, valid email, unique},
   password: {string, mandatory, minLen 8, maxLen 15},
   address: {
     street: {string},
@@ -32,19 +32,20 @@
 - Books Model
 
 ```yaml
-{ 
-  title: {string, mandatory, unique},
-  excerpt: {string, mandatory}, 
-  userId: {ObjectId, mandatory, refs to user model},
-  ISBN: {string, mandatory, unique},
-  category: {string, mandatory},
-  subcategory: [string, mandatory],
-  reviews: {number, default: 0, comment: Holds number of reviews of this book},
-  deletedAt: {Date, when the document is deleted}, 
-  isDeleted: {boolean, default: false},
-  releasedAt: {Date, mandatory, format("YYYY-MM-DD")},
-  createdAt: {timestamp},
-  updatedAt: {timestamp},
+{
+  title: { string, mandatory, unique },
+  excerpt: { string, mandatory },
+  userId: { ObjectId, mandatory, refs to user model },
+  ISBN: { string, mandatory, unique },
+  category: { string, mandatory },
+  subcategory: { string, mandatory },
+  reviews:
+    { number, default: 0, comment: Holds number of reviews of this book },
+  deletedAt: { Date, when the document is deleted },
+  isDeleted: { boolean, default: false },
+  releasedAt: { Date, mandatory, format("YYYY-MM-DD") },
+  createdAt: { timestamp },
+  updatedAt: { timestamp },
 }
 ```
 
@@ -88,14 +89,14 @@
 
 ### GET /books
 
-- Returns all books in the collection that aren't deleted. Return only book _id, title, excerpt, userId, category, releasedAt, reviews field. Response example [here](#get-books-response)
+- Returns all books in the collection that aren't deleted. Return only book \_id, title, excerpt, userId, category, releasedAt, reviews field. Response example [here](#get-books-response)
 - Return the HTTP status 200 if any documents are found. The response structure should be like [this](#successful-response-structure)
 - If no documents are found then return an HTTP status 404 with a response like [this](#error-response-structure)
 - Filter books list by applying filters. Query param can have any combination of below filters.
   - By userId
   - By category
   - By subcategory
-  example of a query url: books?filtername=filtervalue&f2=fv2
+    example of a query url: books?filtername=filtervalue&f2=fv2
 - Return all books sorted by book name in Alphabatical order
 
 ### GET /books/:bookId
@@ -162,29 +163,20 @@
 - Each member of each team should have their tests in running state
 
 Refer below sample
- ![A Postman collection and request sample](assets/Postman-collection-sample.png)
+![A Postman collection and request sample](assets/Postman-collection-sample.png)
 
 ## Response
 
 ### Successful Response structure
 
 ```yaml
-{
-  status: true,
-  message: 'Success',
-  data: {
-
-  }
-}
+{ status: true, message: "Success", data: {} }
 ```
 
 ### Error Response structure
 
 ```yaml
-{
-  status: false,
-  message: ""
-}
+{ status: false, message: "" }
 ```
 
 ## Collections
@@ -197,13 +189,10 @@ Refer below sample
   title: "Mr",
   name: "John Doe",
   phone: 9897969594,
-  email: "johndoe@mailinator.com", 
+  email: "johndoe@mailinator.com",
   password: "abcd1234567",
-  address: {
-    street: "110, Ridhi Sidhi Tower",
-    city: "Jaipur",
-    pincode: "400001"
-  },
+  address:
+    { street: "110, Ridhi Sidhi Tower", city: "Jaipur", pincode: "400001" },
   "createdAt": "2021-09-17T04:25:07.803Z",
   "updatedAt": "2021-09-17T04:25:07.803Z",
 }
@@ -237,7 +226,7 @@ Refer below sample
   reviewedBy: "Jane Doe",
   reviewedAt: "2021-09-17T04:25:07.803Z",
   rating: 4,
-  review: "An exciting nerving thriller. A gripping tale. A must read book."
+  review: "An exciting nerving thriller. A gripping tale. A must read book.",
 }
 ```
 
@@ -322,7 +311,7 @@ Refer below sample
         reviewedAt: "2021-09-17T04:25:07.803Z",
         rating: 4,
         review: "An exciting nerving thriller. A gripping tale. A must read book."
-      }, 
+      },
     ]
   }
 }

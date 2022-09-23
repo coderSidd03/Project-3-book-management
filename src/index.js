@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const moment = require('moment');
-const { default: mongoose } = require('mongoose');
+const {default: mongoose} = require('mongoose');
 const route = require('./routes/route.js');
 
 const app = express();
@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
 mongoose.connect("mongodb+srv://raj_3028:kWaM507ps0Icsdg0@cluster0.pw23ckf.mongodb.net/group16Database", {
@@ -33,11 +33,11 @@ app.use(
 //===================== Global Middleware for All Route =====================//
 app.use('/', route);
 
-//===================== It will Handle error When Wrong Route( not declared ) inputted  =====================//
-// app.use(function (req, res) {
-//     var err = new Error("/ invalid path params provided /");
-//     return res.status(404).send({ status: "ERROR", error: err.message });
-// });
+//===================== It will Handle error When You input Wrong Route =====================//
+app.use(function (req, res) {
+    let err = new Error("Path Not Found.")
+    return res.status(404).send({status: "404", msg: err.message})
+});
 
 
-app.listen(PORT, () => { console.log(`Express App Running on Port >> ${PORT}...`) });
+app.listen(PORT, () => console.log(`Express App Running on Port >> ${PORT}...`));
