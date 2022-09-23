@@ -1,7 +1,8 @@
-const mongoose = require("mongoose")
-const ObjectId = mongoose.Schema.Types.ObjectId
+//=====================Importing Packages=====================//
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
-
+//=====================Creating Review's Schema=====================//
 const reviewModel = new mongoose.Schema({
 
     bookId: {
@@ -12,7 +13,8 @@ const reviewModel = new mongoose.Schema({
     reviewedBy: {
         type: String,
         require: true,
-        default: 'Guest'
+        default: 'Guest',
+        trim:true
     },
     reviewedAt: {
         type: Date,
@@ -26,6 +28,7 @@ const reviewModel = new mongoose.Schema({
     },
     review: {
         type: String,
+        trim:true
 
     },
     isDeleted: {
@@ -34,7 +37,8 @@ const reviewModel = new mongoose.Schema({
     }
 
 
-}, { timestamps: true })
+}, { timestamps: true });
 
 
-module.exports = mongoose.model('Review', reviewModel)
+//=====================Module Export=====================//
+module.exports = mongoose.model('Review', reviewModel);

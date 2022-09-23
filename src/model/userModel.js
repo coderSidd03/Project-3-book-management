@@ -1,5 +1,7 @@
-const mongoose = require('mongoose')
+//=====================Importing Packages=====================//
+const mongoose = require('mongoose');
 
+//=====================Creating User's Schema=====================//
 const userModel = new mongoose.Schema({
 
     title: {
@@ -33,7 +35,7 @@ const userModel = new mongoose.Schema({
         pincode: String
     }
 
-}, { timestamps: true })
+}, { timestamps: true });
 
-
-module.exports = mongoose.model('User', userModel)
+//=====================Module Export=====================//
+module.exports = mongoose.model('User', userModel);
