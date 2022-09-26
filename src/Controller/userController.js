@@ -121,6 +121,7 @@ const loginUser = async (req, res) => {
             iat: Math.floor(Date.now() / 1000),
             exp: Math.floor(Date.now() / 1000) + 60 * 60
         }
+
         let token = JWT.sign({ payload }, " -- project 3 -- book management -- by: soumyadeep chakraborty -- ", { expiresIn: 60 * 60 })
 
         //x=====================Set Key with value in Response Header=====================x//
@@ -130,7 +131,7 @@ const loginUser = async (req, res) => {
         let obj = { userId: userData['_id'].toString(), token: token, iat: (Math.floor(Date.now() / 1000)), exp: (Math.floor(Date.now() / 1000) + 60 * 60) }
 
         //=====================Send Token in Response Body=====================//
-        res.status(200).send({ status: true, message: "Token Created Sucessfully", data: obj })
+        res.status(200).send({ status: true, message: "Token Created Successfully", data: obj })
 
     } catch (error) {
 

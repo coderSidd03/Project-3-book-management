@@ -20,7 +20,7 @@ const createReview = async (req, res) => {
         //=====================Checking the BookId is Valid or Not by Mongoose=====================//
         if (!ObjectId.isValid(BookId)) { return res.status(400).send({ status: false, message: `This BookId: ${BookId} is not Valid.` }) }
 
-        //=====================Checking Mandotory Field=====================//
+        //=====================Checking Mandatory Field=====================//
         if (!checkInputsPresent(data)) { return res.status(400).send({ status: false, message: "Please Provide Details to Create Review." }) }
         if (checkInputsPresent(rest)) { return res.status(400).send({ status: false, message: "You have to put only review & rating & reviewedBy,." }) }
 
@@ -104,7 +104,7 @@ const updateReview = async (req, res) => {
         let checkReviewId = await reviewModel.findOne({ _id: reviewId, isDeleted: false })
         if (!checkReviewId) { return res.status(400).send({ status: false, message: `This ReviewID: ${reviewId} is not exist in DB! or Already been Deleted.` }) }
 
-        //===================== Checking Mandotory Field =====================//
+        //===================== Checking Mandatory Field =====================//
         if (!checkInputsPresent(dataFromBody)) { return res.status(400).send({ status: false, message: "Please Provide Details to Update Review." }) }
         if (checkInputsPresent(rest)) return res.status(400).send({ status: false, message: "please provide required details only (.i.e. review or rating or reviewedBy or both) " });
 

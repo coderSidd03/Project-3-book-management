@@ -42,11 +42,13 @@ const Authorisation = async (req, res, next) => {
             status: false,
             message: `This UserId: ${bookIdFromParams} is not Valid.`
         });
+
         const checkBookId = await bookModel.findOne({_id: bookIdFromParams, isDeleted: false});
         if (!checkBookId) return res.status(404).send({
             status: false,
             message: ` BookId: ${bookIdFromParams}, is not exist or already been deleted.`
         });
+
         if (checkBookId['userId'].toString() !== req.token.payload.userId) {
             return res.status(403).send({status: false, message: "Unauthorized User Access!"});
         }

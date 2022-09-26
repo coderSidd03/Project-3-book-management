@@ -23,7 +23,7 @@ const createBook = async (req, res) => {
 
         if (checkInputsPresent(rest)) return res.status(400).send({ status: false, message: "Invalid field given in request Body" });
 
-        //=====================Checking Mandotory Field=====================//
+        //=====================Checking Mandatory Field=====================//
         if (!title) return res.status(400).send({ status: false, message: "Please Provide Title." });
         if (!excerpt) return res.status(400).send({ status: false, message: "Please Provide Excerpt." });
         if (!userId) return res.status(400).send({ status: false, message: "Please Provide userId." });
@@ -41,7 +41,7 @@ const createBook = async (req, res) => {
 
         if (!validTitle.test(title)) return res.status(400).send({ status: false, message: "Invalid Title format." });
         if (!checkString(excerpt)) return res.status(400).send({ status: false, message: "Invalid Excerpt." });
-        if (!validateId(userId)) return res.status(400).send({ status: false, message: `UserId: ${userId} is not a Valid id.` });
+        if (!ObjectId.isValid(userId)) return res.status(400).send({ status: false, message: `UserId: ${userId} is not a Valid id.` });
 
         if (!validateISBN(ISBN)) return res.status(400).send({ status: false, message: "Invalid ISBN." });
         if (!validCategory.test(category)) return res.status(400).send({ status: false, message: "Invalid Category." });
@@ -66,7 +66,7 @@ const createBook = async (req, res) => {
 
         //x=====================Final Creation of Book=====================x//
         let createBook = await bookModel.create(data);
-        res.status(201).send({ status: true, message: `This ${title} Book is created sucessfully.`, data: createBook });
+        res.status(201).send({ status: true, message: `This ${title} Book is created successfully.`, data: createBook });
     } catch (error) {
         res.status(500).send({ status: 'error', error: error.message });
     }
@@ -84,19 +84,22 @@ const getAllBooks = async (req, res) => {
         if (checkInputsPresent(rest)) { return res.status(400).send({ status: false, message: "You have to put only userId or category or subcategory." }) };
 
         //===================== Fetching data from DB =====================//
-        let getBookDataByQuery = await bookModel.find(queries, { isDeleted: false }).select({
+        let getBookDataByQuery = await bookModel.find(query, { isDeleted: false }).select({
             title: 1,
             excerpt: 1,
             userId: 1,
             category: 1,
             reviews: 1,
             releasedAt: 1
-        }).sort({ title: 1 })
+        });
 
         //===================== Checking length of getDataByQuery =====================//
-        if (getBookDataByQuery.length == 0) return res.status(400).send({ status: false, message: "Data not found in DB." });
+        if (getBookDataByQuery.length === 0) return res.status(400).send({ status: false, message: "Data not found in DB." });
 
-        return res.status(200).send({ status: true, message: 'Books list', data: getDataByQuery });
+        //===================== Sorting Alphabetically by Title =====================//
+        const sortBook = getBookDataByQuery.sort((a, b) => a.title.localeCompare(b.title));
+
+        return res.status(200).send({ status: true, message: 'Books list', data: sortBook });
     } catch (error) {
         res.status(500).send({ status: 'error', error: error.message });
     }
@@ -125,6 +128,7 @@ const getBookById = async (req, res) => {
 
         //===================== Fetching All Data from Review DB and Checking the value of Review =====================//
         let reviewsData = await reviewModel.find({ bookId: bookId, isDeleted: false });
+
         result._doc.reviewData = reviewsData;
 
         res.status(200).send({ status: true, message: "Success", data: result });
@@ -145,7 +149,7 @@ const updateBookById = async (req, res) => {
         //=====================Destructuring Book Data from Body =====================//
         let { title, excerpt, releasedAt, ISBN, ...rest } = body;
 
-        //=====================Checking Mandotory Field=====================//
+        //=====================Checking Mandatory Field=====================//
         if (!checkInputsPresent(body)) return res.status(400).send({ status: false, message: "please provide some details(i.e. title, excerpt, releasedAt, ISBN) to update !!!" });
         if (checkInputsPresent(rest)) return res.status(400).send({ status: false, message: "You have to put only title or excerpt or releasedAt or ISBN." });
 
@@ -199,6 +203,7 @@ const deleteBookById = async (req, res) => {
 
         //===================== We don't accept any input from Q1ery & body =====================//
         if (checkInputsPresent(req.query) || checkInputsPresent(req.body)) return res.status(400).send({ status: false, message: "You can't put anything in query or body." });
+
         //===================== validating bookId =====================//
         if (!ObjectId.isValid(bookId)) return res.status(400).send({ status: false, message: `This BookId: ${bookId} is not Valid.` });
 
