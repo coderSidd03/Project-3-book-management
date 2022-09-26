@@ -8,7 +8,8 @@ const bookModel = new mongoose.Schema({
     title: {
         type: String,
         require: true,
-        unique: true
+        unique: true,
+        trim: true
     },
     excerpt: {
         type: String,
@@ -51,7 +52,7 @@ const bookModel = new mongoose.Schema({
     },
 
 
-}, { timestamps: true });
+}, { timestamps: true })
 
 
 //=====================Module Export=====================//

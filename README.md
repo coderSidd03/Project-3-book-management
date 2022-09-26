@@ -35,12 +35,12 @@
 {
   title: { string, mandatory, unique },
   excerpt: { string, mandatory },
-  userId: { ObjectId, mandatory, refs to user model },
+  userId: { ObjectId, mandatory, refs to user Model },
   ISBN: { string, mandatory, unique },
   category: { string, mandatory },
   subcategory: { string, mandatory },
   reviews:
-    { number, default: 0, comment: Holds number of reviews of this book },
+          { number, default: 0, comment: Holds number of reviews of this book },
   deletedAt: { Date, when the document is deleted },
   isDeleted: { boolean, default: false },
   releasedAt: { Date, mandatory, format("YYYY-MM-DD") },
@@ -53,11 +53,11 @@
 
 ```yaml
 {
-  bookId: {ObjectId, mandatory, refs to book model},
+  bookId: {ObjectId, mandatory, refs to book Model},
   reviewedBy: {string, mandatory, default 'Guest', value: reviewer's name},
   reviewedAt: {Date, mandatory},
   rating: {number, min 1, max 5, mandatory},
-  review: {string, optional}
+  review: {string, optional},
   isDeleted: {boolean, default: false},
 }
 ```
@@ -192,7 +192,7 @@ Refer below sample
   email: "johndoe@mailinator.com",
   password: "abcd1234567",
   address:
-    { street: "110, Ridhi Sidhi Tower", city: "Jaipur", pincode: "400001" },
+          { street: "110, Ridhi Sidhi Tower", city: "Jaipur", pincode: "400001" },
   "createdAt": "2021-09-17T04:25:07.803Z",
   "updatedAt": "2021-09-17T04:25:07.803Z",
 }
@@ -211,7 +211,7 @@ Refer below sample
   "subcategory": "Non fiction",
   "isDeleted": false,
   "reviews": 0,
-  "releasedAt": "2021-09-17"
+  "releasedAt": "2021-09-17",
   "createdAt": "2021-09-17T04:25:07.803Z",
   "updatedAt": "2021-09-17T04:25:07.803Z",
 }
@@ -243,7 +243,7 @@ Refer below sample
       "_id": ObjectId("88abc190ef0288abc190ef55"),
       "title": "How to win friends and influence people",
       "excerpt": "book body",
-      "userId": ObjectId("88abc190ef0288abc190ef02")
+      "userId": ObjectId("88abc190ef0288abc190ef02"),
       "category": "Book",
       "reviews": 0,
       "releasedAt": "2021-09-17T04:25:07.803Z"
@@ -252,7 +252,7 @@ Refer below sample
       "_id": ObjectId("88abc190ef0288abc190ef56"),
       "title": "How to win friends and influence people",
       "excerpt": "book body",
-      "userId": ObjectId("88abc190ef0288abc190ef02")
+      "userId": ObjectId("88abc190ef0288abc190ef02"),
       "category": "Book",
       "reviews": 0,
       "releasedAt": "2021-09-17T04:25:07.803Z"
@@ -271,12 +271,12 @@ Refer below sample
     "_id": ObjectId("88abc190ef0288abc190ef55"),
     "title": "How to win friends and influence people",
     "excerpt": "book body",
-    "userId": ObjectId("88abc190ef0288abc190ef02")
+    "userId": ObjectId("88abc190ef0288abc190ef02"),
     "category": "Book",
     "subcategory": ["Non fiction", "Self Help"],
     "isDeleted": false,
     "reviews": 4,
-    "releasedAt": "2021-09-17T04:25:07.803Z"
+    "releasedAt": "2021-09-17T04:25:07.803Z",
     "createdAt": "2021-09-17T04:25:07.803Z",
     "updatedAt": "2021-09-17T04:25:07.803Z",
     "reviewsData": [
@@ -327,12 +327,12 @@ Refer below sample
     "_id": ObjectId("88abc190ef0288abc190ef55"),
     "title": "How to win friends and influence people",
     "excerpt": "book body",
-    "userId": ObjectId("88abc190ef0288abc190ef02")
+    "userId": ObjectId("88abc190ef0288abc190ef02"),
     "category": "Book",
     "subcategory": "Non fiction", "Self Help"],
     "isDeleted": false,
     "reviews": 0,
-    "releasedAt": "2021-09-17"
+    "releasedAt": "2021-09-17",
     "createdAt": "2021-09-17T04:25:07.803Z",
     "updatedAt": "2021-09-17T04:25:07.803Z",
     "reviewsData": []

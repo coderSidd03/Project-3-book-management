@@ -1,14 +1,10 @@
-const bookModel = require('../model/bookModel');
-const userModel = require("../model/userModel");
-const reviewModel = require('../model/reviewModel');
-const ObjectId = require('mongoose').Types.ObjectId;
-const {
-    checkInputsPresent,
-    checkString,
-    validateISBN,
-    validateDate,
-    validateId
-} = require('../validator/validator');
+//=====================Importing Module and Packages=====================//
+const moment = require('moment')
+const bookModel = require('../Model/bookModel')
+const userModel = require("../Model/userModel")
+const reviewModel = require('../Model/reviewModel')
+const ObjectId = require('mongoose').Types.ObjectId
+const { checkInputsPresent, checkString, validateName, validateTName, validateISBN, validateDate } = require('../Validator/validator')
 
 const validTitle = /^[a-zA-Z]+/;
 const validCategory = /^[a-zA-Z]+/;
@@ -21,9 +17,9 @@ const createBook = async (req, res) => {
         let loggedInUserId = req.token.payload['userId']
 
         //=====================Destructuring Book Body Data =====================//
-        let { title, excerpt, userId, ISBN, category, subcategory, reviews, releasedAt, ...rest } = data;
+        let { title, excerpt, userId, ISBN, category, subcategory, reviews, releasedAt, isDeleted, ...rest } = data;
 
-        if (!checkInputsPresent(data)) return res.status(400).send({ status: false, message: "No data found from body! Provide Mandatory Fields(i.e. title, excerpt, userId, ISBN, category, subcategory, releasedAt)." });
+        if (!checkInputsPresent(data)) return res.status(400).send({ status: false, message: "No data found from body! >> Provide Mandatory Fields(i.e. title, excerpt, userId, ISBN, category, subcategory, releasedAt)." });
 
         if (checkInputsPresent(rest)) return res.status(400).send({ status: false, message: "Invalid field given in request Body" });
 
