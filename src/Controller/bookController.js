@@ -30,8 +30,8 @@ const createBook = async (req, res) => {
             let uploadedFileURL = await uploadFile(files[0]);               // written the function uploadFile
 
             //=====================Fetching BookCover from Book DB and Checking Duplicate BookCover is Present or Not=====================//
-            const uniqueCover = await bookModel.findOne({ bookCover: uploadedFileURL });
-            if (uniqueCover) return res.status(400).send({ status: false, message: "BookCover Already Exist." });
+            // const uniqueCover = await bookModel.findOne({ bookCover: uploadedFileURL });
+            // if (uniqueCover) return res.status(400).send({ status: false, message: "BookCover Already Exist." });
 
             //===================== Assign the Key and Value of Book Cover into Data Body =====================//
             data.bookCover = uploadedFileURL;
@@ -57,7 +57,7 @@ const createBook = async (req, res) => {
         if (!subcategory) return res.status(400).send({ status: false, message: "Please Provide Subcategory." });
         if (!releasedAt) return res.status(400).send({ status: false, message: "Please Provide releasedAt" });
 
-        // if (data.hasOwnProperty("isDeleted") && isDeleted == true) return res.status(400).send({ status: false, message: "You can't put isDeleted: true! It should be false at the time of creation (or by default)." });
+        if (isDeleted && isDeleted == 'true') return res.status(400).send({ status: false, message: "You can't put isDeleted: true! It should be false at the time of creation (or by default)." });
 
         //=====================Checking the value of reviews=====================//
         if (reviews && (reviews !== 0)) return res.status(400).send({ status: false, message: "You can't put reviews at the creation time." });
