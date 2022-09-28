@@ -5,12 +5,14 @@ const {default: mongoose} = require('mongoose');
 const moment = require('moment');
 const route = require('./routes/route.js');
 const PORT = process.env.PORT || 3000;
+const multer = require('multer')
 
 const app = express();
 
 
 app.use(express.json());
 app.use(cors());
+app.use(multer().any());
 
 mongoose.connect("mongodb+srv://raj_3028:kWaM507ps0Icsdg0@cluster0.pw23ckf.mongodb.net/group16Database", {
     useNewUrlParser: true

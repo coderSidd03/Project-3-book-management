@@ -5,6 +5,7 @@ const userModel = require("../Model/userModel")
 const reviewModel = require('../Model/reviewModel')
 const ObjectId = require('mongoose').Types.ObjectId
 const { checkInputsPresent, checkString, validateName, validateTName, validateISBN, validateDate } = require('../Validator/validator')
+const { uploadFile } = require('../Controller/AwsController')
 
 const validTitle = /^[a-zA-Z]+/;
 const validCategory = /^[a-zA-Z]+/;
@@ -13,11 +14,35 @@ const validateField = /^[a-zA-Z0-9\s\-,?_.]+$/;
 //<<<===================== Create Book ===================== <<< /books >>>//
 const createBook = async (req, res) => {
     try {
-        let data = req.body
-        let loggedInUserId = req.token.payload['userId']
+        let data = req.body;
+        let loggedInUserId = req.token.payload['userId'];
+
+        let files = req.files;                                              // getting file from Form-Data 
 
         //=====================Destructuring Book Body Data =====================//
         let { title, excerpt, userId, ISBN, category, subcategory, reviews, releasedAt, isDeleted, ...rest } = data;
+
+        
+        //<<<=============================== getting AWS Link of Book Cover ===============================>>>//
+        // Checking the Array Length of Form-Data
+        if (files && files.length > 0) {
+
+            let uploadedFileURL = await uploadFile(files[0]);               // written the function uploadFile
+
+            //=====================Fetching BookCover from Book DB and Checking Duplicate BookCover is Present or Not=====================//
+            const uniqueCover = await bookModel.findOne({ bookCover: uploadedFileURL });
+            if (uniqueCover) return res.status(400).send({ status: false, message: "BookCover Already Exist." });
+
+            //===================== Assign the Key and Value of Book Cover into Data Body =====================//
+            data.bookCover = uploadedFileURL;
+        }
+        else {
+            return res.status(400).send({ msg: "No File Found!" })
+        }
+
+        // data.bookCover = uploadedFile;
+        // data = JSON.parse(JSON.stringify(data));
+        // console.log(data)
 
         if (!checkInputsPresent(data)) return res.status(400).send({ status: false, message: "No data found from body! >> Provide Mandatory Fields(i.e. title, excerpt, userId, ISBN, category, subcategory, releasedAt)." });
 
@@ -32,7 +57,7 @@ const createBook = async (req, res) => {
         if (!subcategory) return res.status(400).send({ status: false, message: "Please Provide Subcategory." });
         if (!releasedAt) return res.status(400).send({ status: false, message: "Please Provide releasedAt" });
 
-        if (data.hasOwnProperty("isDeleted") && isDeleted == true) return res.status(400).send({ status: false, message: "You can't put isDeleted: true! It should be false at the time of creation (or by default)." });
+        // if (data.hasOwnProperty("isDeleted") && isDeleted == true) return res.status(400).send({ status: false, message: "You can't put isDeleted: true! It should be false at the time of creation (or by default)." });
 
         //=====================Checking the value of reviews=====================//
         if (reviews && (reviews !== 0)) return res.status(400).send({ status: false, message: "You can't put reviews at the creation time." });
