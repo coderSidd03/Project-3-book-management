@@ -22,7 +22,7 @@ const createBook = async (req, res) => {
         //=====================Destructuring Book Body Data =====================//
         let { title, excerpt, userId, ISBN, category, subcategory, reviews, releasedAt, isDeleted, ...rest } = data;
 
-        
+
         //<<<=============================== getting AWS Link of Book Cover ===============================>>>//
         // Checking the Array Length of Form-Data
         if (files && files.length > 0) {
@@ -34,15 +34,18 @@ const createBook = async (req, res) => {
             // if (uniqueCover) return res.status(400).send({ status: false, message: "BookCover Already Exist." });
 
             //===================== Assign the Key and Value of Book Cover into Data Body =====================//
+            // data.bookCover = uploadedFile;
+            // data = JSON.parse(JSON.stringify(data));
+            
             data.bookCover = uploadedFileURL;
+            // console.log(data)
         }
         else {
             return res.status(400).send({ msg: "No File Found!" })
         }
 
-        // data.bookCover = uploadedFile;
-        // data = JSON.parse(JSON.stringify(data));
-        // console.log(data)
+
+
 
         if (!checkInputsPresent(data)) return res.status(400).send({ status: false, message: "No data found from body! >> Provide Mandatory Fields(i.e. title, excerpt, userId, ISBN, category, subcategory, releasedAt)." });
 
@@ -60,7 +63,7 @@ const createBook = async (req, res) => {
         if (isDeleted && isDeleted == 'true') return res.status(400).send({ status: false, message: "You can't put isDeleted: true! It should be false at the time of creation (or by default)." });
 
         //=====================Checking the value of reviews=====================//
-        if (reviews && (reviews !== 0)) return res.status(400).send({ status: false, message: "You can't put reviews at the creation time." });
+        if (reviews && ((Number(reviews)) !== 0)) return res.status(400).send({ status: false, message: "You can't put reviews at the creation time." });
 
         //=====================Validation of title, userId, ISBN, category, releasedAt =====================//
 
